@@ -1,0 +1,71 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaUsers, FaGlobeAmericas, FaCity, FaLanguage } from 'react-icons/fa';
+
+const CountryCard = ({ country }) => {
+  // Extract country data safely
+  const name = country?.name?.common || 'Unknown';
+  const population = country?.population ? country.population.toLocaleString() : 'Unknown';
+  const region = country?.region || 'Unknown Region';
+  const capital = country?.capital?.[0] || 'Unknown';
+  const flag = country?.flags?.svg || country?.flags?.png || '';
+  const languages = country?.languages 
+    ? Object.values(country.languages).join(', ') 
+    : 'Unknown';
+  const countryCode = country?.cca3 || country?.alpha3Code || '';
+  
+  return (
+    <div className="card h-full">
+      <div className="relative h-40 mb-4 overflow-hidden rounded">
+        {flag ? (
+          <img 
+            src={flag} 
+            alt={`Flag of ${name}`} 
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-500">No Flag Available</span>
+          </div>
+        )}
+        <div className="absolute bottom-0 left-0 right-0 bg-black/50 py-1 px-2">
+          <h3 className="text-lg font-semibold text-white truncate">{name}</h3>
+        </div>
+      </div>
+      
+      <div className="space-y-2 text-sm">
+        <p className="flex items-center text-gray-700">
+          <FaGlobeAmericas className="mr-2 text-primary" /> 
+          <span className="font-medium">Region:</span> 
+          <span className="ml-2">{region}</span>
+        </p>
+        <p className="flex items-center text-gray-700">
+          <FaUsers className="mr-2 text-primary" /> 
+          <span className="font-medium">Population:</span> 
+          <span className="ml-2">{population}</span>
+        </p>
+        <p className="flex items-center text-gray-700">
+          <FaCity className="mr-2 text-primary" /> 
+          <span className="font-medium">Capital:</span> 
+          <span className="ml-2">{capital}</span>
+        </p>
+        <p className="flex items-center text-gray-700">
+          <FaLanguage className="mr-2 text-primary" /> 
+          <span className="font-medium">Languages:</span> 
+          <span className="ml-2 truncate">{languages}</span>
+        </p>
+      </div>
+      
+      <div className="mt-4">
+        <Link 
+          to={`/country/${countryCode}`}
+          className="block w-full text-center btn-primary"
+        >
+          Explore Details
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default CountryCard; 
